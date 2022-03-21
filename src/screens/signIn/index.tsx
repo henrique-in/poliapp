@@ -1,14 +1,11 @@
 import React from 'react';
-import { View,Text } from 'react-native';
-import { styles } from './styles';
-
-// import { Container } from './styles';
+import {View, Text} from 'react-native';
+import {styles} from './styles';
 
 export const SignIn: React.FC = () => {
-  return   (  
+  return (
     <View style={styles.container}>
-        <Text>sign</Text>
+      <Text>sign</Text>
     </View>
   );
-}
-
+};

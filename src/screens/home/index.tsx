@@ -1,13 +1,12 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import {Text, View} from 'react-native';
 
 // import { Container } from './styles';
 
 export const Home: React.FC = () => {
-  return (  
+  return (
     <View>
-        <Text>Home</Text>
+      <Text>Home</Text>
     </View>
-  )
-}
-
+  );
+};
