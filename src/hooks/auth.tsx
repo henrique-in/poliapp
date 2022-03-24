@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, {
   createContext,
   useCallback,
@@ -28,7 +29,6 @@ interface User {
   id: string;
   name: string;
   avatar: string;
-
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -39,41 +39,32 @@ export const AuthProvider: React.FC = ({children}) => {
 
   useEffect(() => {
     async function loadStorageData(): Promise<void> {
-      const user = await AsyncStorage.getItem( '@PolliApp:user');
+      const user = await AsyncStorage.getItem('@PolliApp:user');
 
       if (user) {
-
-
         setData({user: JSON.parse(user[1])});
       }
 
       setLoading(false);
     }
 
-    loadStorageData();
+    void loadStorageData();
   }, []);
 
   const signIn = useCallback(async ({cpf}) => {
     const response = await api.post('/login', {
-      cpf
+      cpf: cpf,
     });
 
     const user = response.data;
-    
-    await AsyncStorage.setItem(
-   
-      '@PolliApp:user', JSON.stringify(user),
-    );
 
-
+    await AsyncStorage.setItem('@PolliApp:user', JSON.stringify(user));
 
     setData({user});
   }, []);
 
   const signOut = useCallback(async () => {
-    await AsyncStorage.removeItem(
-      '@PolliApp:user',
-    );
+    await AsyncStorage.removeItem('@PolliApp:user');
 
     setData({} as AuthState);
   }, []);
@@ -90,8 +81,7 @@ export const AuthProvider: React.FC = ({children}) => {
   // );
 
   return (
-    <AuthContext.Provider
-      value={{user: data.user, loading, signIn, signOut}}>
+    <AuthContext.Provider value={{user: data.user, loading, signIn, signOut}}>
       {children}
     </AuthContext.Provider>
   );
