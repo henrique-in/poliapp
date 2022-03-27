@@ -61,9 +61,11 @@ export const AuthProvider: React.FC = ({children}) => {
 
     const filterUser = user.filter((data: User) => data?.cpf === cpf);
 
+    console.log(filterUser[0]);
+
     await AsyncStorage.setItem('@PolliApp:user', JSON.stringify(filterUser[0]));
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    // // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     setData({user: filterUser[0]});
   }, []);
 

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image, Alert} from 'react-native';
+import {MaskService} from 'react-native-masked-text';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {Button, Input} from '~/components';
 import {useAuth} from '~/hooks/auth';
@@ -21,7 +22,8 @@ export const SignIn: React.FC = () => {
   const handleLogin = (cpf: string) => {
     setLoading(true);
     try {
-      void signIn(cpf);
+      const data = cpf.replace(/[^a-zA-Z0-9 ]/g, '');
+      void signIn(data);
     } catch (error) {
       Alert.alert('', 'Verifique seus dados');
       setLoading(false);
@@ -54,7 +56,7 @@ export const SignIn: React.FC = () => {
           <Input
             label="Insira seu CPF para fazer login:"
             placeholder="000.000.000-00"
-            onChangeText={setCpf}
+            onChangeText={text => setCpf(MaskService.toMask('cpf', text))}
             value={cpf}
           />
 

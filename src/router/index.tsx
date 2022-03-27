@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 
 import {PrivateRoutes} from './private.routes';
 import {AuthRoutes} from './auth.routes';
