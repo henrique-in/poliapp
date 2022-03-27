@@ -29,7 +29,13 @@ module.exports = {
      'react/prop-types': 'off',
      'prettier/prettier': 'error',
      "@typescript-eslint/no-var-requires": "error",
-      "@typescript-eslint/no-misused-promises": [
+     "@typescript-eslint/unbound-method": [
+      "error",
+      {
+        "ignoreStatic": true
+      }
+    ],
+    "@typescript-eslint/no-misused-promises": [
          "error",
          {
            "checksVoidReturn": false

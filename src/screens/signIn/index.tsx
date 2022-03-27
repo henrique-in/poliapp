@@ -1,6 +1,16 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Alert,
+  Platform,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Keyboard,
+} from 'react-native';
 import {MaskService} from 'react-native-masked-text';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {Button, Input} from '~/components';
@@ -21,64 +31,69 @@ export const SignIn: React.FC = () => {
 
   const handleLogin = (cpf: string) => {
     setLoading(true);
-    try {
-      const data = cpf.replace(/[^a-zA-Z0-9 ]/g, '');
-      void signIn(data);
-    } catch (error) {
-      Alert.alert('', 'Verifique seus dados');
+    setTimeout(() => {
+      try {
+        const data = cpf.replace(/[^a-zA-Z0-9 ]/g, '');
+        void signIn(data).catch(err => Alert.alert('', 'Verifique seus dados'));
+      } catch (error) {}
       setLoading(false);
-    }
+    }, 2000);
   };
 
   return (
-    <View style={{...styles.container, backgroundColor: theme.main}}>
-      <Image
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        source={themeType === 'dark' ? dark : light}
-        style={{
-          height: 180,
-          width: 180,
-          alignSelf: 'center',
-          position: 'absolute',
-          top: RFValue(50),
-        }}
-      />
-      <View
-        style={{
-          ...styles.content,
-          backgroundColor: theme.background,
-        }}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{...styles.container, backgroundColor: theme.main}}>
+        <Image
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          source={themeType === 'dark' ? dark : light}
+          style={{
+            height: 180,
+            width: 180,
+            alignSelf: 'center',
+            position: 'absolute',
+            top: RFValue(Platform.OS === 'android' ? 20 : 50),
+          }}
+        />
         <View
           style={{
-            height: '80%',
-            paddingHorizontal: RFValue(20),
+            ...styles.content,
+            backgroundColor: theme.background,
           }}>
-          <Input
-            label="Insira seu CPF para fazer login:"
-            placeholder="000.000.000-00"
-            onChangeText={text => setCpf(MaskService.toMask('cpf', text))}
-            value={cpf}
-          />
-
-          <View style={{marginTop: RFValue(60)}}>
-            <Button
-              text="ENTRAR"
-              textColor={theme.buttonText}
-              buttonColor={theme.button}
-              loading={loading}
-              onPress={() => handleLogin(cpf)}
+          <View
+            style={{
+              height: '80%',
+              paddingHorizontal: RFValue(20),
+            }}>
+            <Input
+              label="Insira seu CPF para fazer login:"
+              placeholder="000.000.000-00"
+              onChangeText={text => setCpf(MaskService.toMask('cpf', text))}
+              value={cpf}
             />
+
+            <View style={{marginTop: RFValue(60)}}>
+              <Button
+                text="ENTRAR"
+                textColor={theme.buttonText}
+                buttonColor={theme.button}
+                disabled={cpf.length < 11 ? true : false}
+                loading={loading}
+                onPress={() => handleLogin(cpf)}
+              />
+            </View>
+
+            <TouchableOpacity onPress={() => toogleTheme('dark')}>
+              <Text style={{color: theme.primaryText}}>dark</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => toogleTheme('light')}>
+              <Text style={{color: theme.primaryText}}>light</Text>
+            </TouchableOpacity>
           </View>
-
-          <TouchableOpacity onPress={() => toogleTheme('dark')}>
-            <Text style={{color: theme.primaryText}}>dark</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => toogleTheme('light')}>
-            <Text style={{color: theme.primaryText}}>light</Text>
-          </TouchableOpacity>
         </View>
-      </View>
-    </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };

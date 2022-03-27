@@ -23,7 +23,7 @@ export const themes = {
     background: '#000000',
     primaryText: '#ffffff',
     placeholder: 'rgba(255,255,255,0.4)',
-    backgroundSecondary: '#5B5B5B',
+    backgroundSecondary: '#323232',
     button: '#ffffff',
     buttonText: '#000',
     primary: '#a862ea',

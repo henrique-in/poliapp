@@ -1,6 +1,8 @@
-import api from '~/services/api';
-
+import {api, apiFrases} from '~/services/api';
 
 export const UserRequest = {
-    
-}
+  getFrases: function (params: string, max: number) {
+    const result = apiFrases.get(`?term=${params}&max=${max}`);
+    return result;
+  },
+};

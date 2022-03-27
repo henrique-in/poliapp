@@ -8,7 +8,8 @@ import React, {
   useEffect,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import api from '../services/api';
+import {api} from '../services/api';
+import {Alert} from 'react-native';
 
 interface AuthState {
   user: User;
@@ -44,7 +45,7 @@ export const AuthProvider: React.FC = ({children}) => {
       const user = await AsyncStorage.getItem('@PolliApp:user');
 
       if (user) {
-        setData({user: JSON.parse(user[1])});
+        setData({user: JSON.parse(user)});
       }
 
       setLoading(false);
@@ -61,12 +62,17 @@ export const AuthProvider: React.FC = ({children}) => {
 
     const filterUser = user.filter((data: User) => data?.cpf === cpf);
 
-    console.log(filterUser[0]);
+    if (filterUser[0].name) {
+      await AsyncStorage.setItem(
+        '@PolliApp:user',
+        JSON.stringify(filterUser[0])
+      );
 
-    await AsyncStorage.setItem('@PolliApp:user', JSON.stringify(filterUser[0]));
-
-    // // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    setData({user: filterUser[0]});
+      // // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      setData({user: filterUser[0]});
+    } else {
+      return Alert.alert('', 'Usuário não encontrado');
+    }
   }, []);
 
   const signOut = useCallback(async () => {
