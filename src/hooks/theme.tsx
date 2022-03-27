@@ -11,6 +11,9 @@ import api from '../services/api';
 import {themes} from '~/theme/colors';
 
 interface ThemeProps {
+  main: string;
+  button: string;
+  placeholder: string;
   background: string;
   backgroundSecondary: string;
   primary: string;
@@ -24,10 +27,12 @@ interface ThemeProps {
   white: string;
   skyBlue: string;
   green: string;
+  buttonText: string;
 }
 
 interface ThemeContext {
   theme: ThemeProps;
+  themeType: string;
   toogleTheme(type: string): Promise<void>;
 }
 
@@ -35,6 +40,7 @@ const ThemeContext = createContext<ThemeContext>({} as ThemeContext);
 
 export const ThemeProvider: React.FC = ({children}) => {
   const [theme, setTheme] = useState<ThemeProps>({} as ThemeProps);
+  const [themeType, setThemeType] = useState('');
 
   useEffect(() => {
     async function loadThemeType(): Promise<void> {
@@ -45,6 +51,7 @@ export const ThemeProvider: React.FC = ({children}) => {
       } else {
         setTheme(themes.light);
       }
+      setThemeType(themeType);
     }
 
     void loadThemeType();
@@ -57,10 +64,11 @@ export const ThemeProvider: React.FC = ({children}) => {
     } else {
       setTheme(themes.light);
     }
+    setThemeType(type);
   }, []);
 
   return (
-    <ThemeContext.Provider value={{theme, toogleTheme}}>
+    <ThemeContext.Provider value={{theme, toogleTheme, themeType}}>
       {children}
     </ThemeContext.Provider>
   );

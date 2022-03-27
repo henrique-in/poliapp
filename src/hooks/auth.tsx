@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, {
   createContext,
@@ -29,6 +30,7 @@ interface User {
   id: string;
   name: string;
   avatar: string;
+  cpf: string;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -51,16 +53,18 @@ export const AuthProvider: React.FC = ({children}) => {
     void loadStorageData();
   }, []);
 
-  const signIn = useCallback(async ({cpf}) => {
-    const response = await api.post('/login', {
-      cpf: cpf,
-    });
+  const signIn = useCallback(async cpf => {
+    const response = await api.get('/user');
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const user = response.data;
 
-    await AsyncStorage.setItem('@PolliApp:user', JSON.stringify(user));
+    const filterUser = user.filter((data: User) => data?.cpf === cpf);
 
-    setData({user});
+    await AsyncStorage.setItem('@PolliApp:user', JSON.stringify(filterUser[0]));
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    setData({user: filterUser[0]});
   }, []);
 
   const signOut = useCallback(async () => {

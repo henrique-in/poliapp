@@ -1,12 +1,15 @@
-import { ViewStyle } from 'react-native'
-import { color } from '~/theme/colors'
-
+import {TextStyle, ViewStyle} from 'react-native';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export const styles = {
-    container:{
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center',
-        backgroundColor:color.background
-    } as ViewStyle
-}
+  container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  } as ViewStyle,
+  content: {
+    width: '100%',
+    height: '70%',
+    borderTopLeftRadius: RFValue(110),
+    justifyContent: 'flex-end',
+  } as ViewStyle,
+};

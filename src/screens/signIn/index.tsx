@@ -1,59 +1,82 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import React from 'react';
-import {View, Text, TouchableOpacity, TextInput} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, Image, Alert} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
+import {Button, Input} from '~/components';
+import {useAuth} from '~/hooks/auth';
 
 import {useTheme} from '~/hooks/theme';
 import {styles} from './styles';
 
+const light = require('~/assets/logo_light.png');
+const dark = require('~/assets/logo_dark.png');
+
 export const SignIn: React.FC = () => {
-  const {theme, toogleTheme} = useTheme();
+  const {theme, toogleTheme, themeType} = useTheme();
+  const {signIn} = useAuth();
+
+  const [loading, setLoading] = useState(false);
+  const [cpf, setCpf] = useState('');
+
+  const handleLogin = (cpf: string) => {
+    setLoading(true);
+    try {
+      void signIn(cpf);
+    } catch (error) {
+      Alert.alert('', 'Verifique seus dados');
+      setLoading(false);
+    }
+  };
 
   return (
-    <View style={{...styles.container, backgroundColor: theme.background}}>
+    <View style={{...styles.container, backgroundColor: theme.main}}>
+      <Image
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        source={themeType === 'dark' ? dark : light}
+        style={{
+          height: 180,
+          width: 180,
+          alignSelf: 'center',
+          position: 'absolute',
+          top: RFValue(50),
+        }}
+      />
       <View
         style={{
-          backgroundColor: theme.backgroundSecondary,
-          width: '90%',
-          height: RFValue(300),
-          borderRadius: 20,
-          alignItems: 'center',
-          justifyContent: 'center',
+          ...styles.content,
+          backgroundColor: theme.background,
         }}>
-        <View style={{width: '80%'}}>
-          <Text
-            style={{
-              color: theme.primaryText,
-              fontSize: RFValue(15),
-              marginBottom: RFValue(10),
-            }}>
-            CPF
-          </Text>
-          <TextInput
+        <View
+          style={{
+            height: '80%',
+            paddingHorizontal: RFValue(20),
+          }}>
+          <Input
+            label="Insira seu CPF para fazer login:"
             placeholder="000.000.000-00"
-            placeholderTextColor={theme.primaryText}
-            keyboardType="number-pad"
-            style={{
-              width: '100%',
-              paddingVertical: RFValue(10),
-              borderRadius: 5,
-              borderWidth: 0.6,
-              padding: 5,
-              borderColor: theme.primaryDark,
-              color: theme.primaryLight,
-              fontSize: RFValue(14),
-            }}
+            onChangeText={setCpf}
+            value={cpf}
           />
+
+          <View style={{marginTop: RFValue(60)}}>
+            <Button
+              text="ENTRAR"
+              textColor={theme.buttonText}
+              buttonColor={theme.button}
+              loading={loading}
+              onPress={() => handleLogin(cpf)}
+            />
+          </View>
+
+          <TouchableOpacity onPress={() => toogleTheme('dark')}>
+            <Text style={{color: theme.primaryText}}>dark</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => toogleTheme('light')}>
+            <Text style={{color: theme.primaryText}}>light</Text>
+          </TouchableOpacity>
         </View>
       </View>
-
-      <TouchableOpacity onPress={() => toogleTheme('dark')}>
-        <Text style={{color: theme.primaryText}}>dark</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => toogleTheme('light')}>
-        <Text style={{color: theme.primaryText}}>light</Text>
-      </TouchableOpacity>
     </View>
   );
 };
