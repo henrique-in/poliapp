@@ -26,7 +26,8 @@ export const themes = {
     backgroundSecondary: '#323232',
     button: '#ffffff',
     buttonText: '#000',
-    primary: '#a862ea',
+
+    primary: '#ffffff',
     primaryLight: '#bf62ea',
     primaryDark: '#6545a4',
     secondary: '#6383ea',
@@ -46,7 +47,7 @@ export const themes = {
     backgroundSecondary: '#ffffff',
     placeholder: 'rgba(0,0,0,0.5)',
 
-    primary: '#a862ea',
+    primary: '#50068D',
     primaryLight: '#bf62ea',
     primaryDark: '#6545a4',
 

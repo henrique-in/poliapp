@@ -5,4 +5,8 @@ export const UserRequest = {
     const result = apiFrases.get(`?term=${params}&max=${max}`);
     return result;
   },
+  getAvatars: function () {
+    const result = api.get('avatars');
+    return result;
+  },
 };

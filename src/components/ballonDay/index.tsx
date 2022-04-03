@@ -10,7 +10,7 @@ import {RFValue} from 'react-native-responsive-fontsize';
 import {useTheme} from '~/hooks/theme';
 import {UserRequest} from '~/models/requests';
 
-// import { Container } from './styles';
+import {styles} from './styles';
 
 export const BallonDay: React.FC = () => {
   const {theme} = useTheme();
@@ -43,38 +43,16 @@ export const BallonDay: React.FC = () => {
       ) : (
         <View
           style={{
-            width: '90%',
-            height: RFValue(170),
+            ...styles.content,
             backgroundColor: theme.backgroundSecondary,
-            alignSelf: 'center',
-            marginVertical: RFValue(15),
-            borderRadius: 20,
-            padding: 10,
-            elevation: 4,
-            ...Platform.select({
-              android: {
-                elevation: 3,
-              },
-              ios: {
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 2,
-                  height: 2,
-                },
-                shadowOpacity: 0.2,
-                shadowRadius: 3.84,
-              },
-            }),
           }}>
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={{fontSize: RFValue(15), color: theme.primaryText}}>
               Para te motivar:
             </Text>
             <Text
               style={{
-                fontSize: RFValue(13),
-                marginVertical: 15,
-                textAlign: 'justify',
+                ...styles.title,
                 color: theme.primaryText,
               }}>
               {frases?.texto}
